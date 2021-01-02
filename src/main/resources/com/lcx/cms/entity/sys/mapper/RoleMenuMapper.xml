@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.sys.mapper.RoleMenuMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.sys.entity.RoleMenu">
+    <id column="sys_role_menu_id" property="id" />
+    <result column="sys_role_menu_role_id" property="roleId" />
+    <result column="sys_role_menu_menu_id" property="menuId" />
+  </resultMap>
+
+  <sql id="baseColumns">
+    sys_role_menu.id AS sys_role_menu_id,
+    sys_role_menu.role_id AS sys_role_menu_role_id,
+    sys_role_menu.menu_id AS sys_role_menu_menu_id,
+  </sql>
+</mapper>

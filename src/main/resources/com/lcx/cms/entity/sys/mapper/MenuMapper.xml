@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.sys.mapper.MenuMapper">
+
+    <resultMap id="baseResultMap" type="com.lcx.cms.entity.sys.entity.Menu">
+        <id column="sys_menu_id" property="id"/>
+        <result column="sys_menu_name" property="name"/>
+        <result column="sys_menu_status" property="status"/>
+        <result column="sys_menu_sort" property="sort"/>
+        <result column="sys_menu_path" property="path"/>
+        <result column="sys_menu_parent_id" property="parentId"/>
+        <result column="sys_menu_create_by" property="createBy"/>
+        <result column="sys_menu_create_time" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="withChildResultMap" extends="baseResultMap" type="com.lcx.cms.entity.sys.entity.Menu">
+        <collection property="child" column="{roleId=role_id,parentId=sys_menu_id}" select="findByRoleIdAndParentId"/>
+    </resultMap>
+
+
+    <sql id="baseColumns">
+    sys_menu.id AS sys_menu_id,
+    sys_menu.name AS sys_menu_name,
+    sys_menu.status AS sys_menu_status,
+    sys_menu.sort AS sys_menu_sort,
+    sys_menu.path AS sys_menu_path,
+    sys_menu.parent_id AS sys_menu_parent_id,
+    sys_menu.create_by AS sys_menu_create_by,
+    sys_menu.create_time AS sys_menu_create_time
+  </sql>
+
+    <select id="findMenusByUser" resultMap="withChildResultMap">
+        SELECT
+        DISTINCT
+        <include refid="baseColumns"/>,
+        sru.role_id as role_id
+        FROM sys_role_user sru
+        JOIN sys_role_menu srm ON sru.role_id = srm.role_id AND sru.user_id = #{userId}
+        JOIN sys_menu sys_menu ON srm.menu_id = sys_menu.id
+        WHERE sys_menu.parent_id is null
+        order by sys_menu.sort
+    </select>
+
+    <select id="findMenusByRoleId" resultMap="withChildResultMap">
+        SELECT
+        <include refid="baseColumns"/>,
+        sru.role_id as role_id
+        FROM sys_role_menu srm JOIN sys_menu sys_menu ON srm.menu_id = sys_menu.id and srm.role_id = #{roleId}
+        WHERE sys_menu.parent_id is null
+    </select>
+
+    <select id="pageAll" resultMap="withChildResultMap">
+        SELECT
+        <include refid="baseColumns"/>,
+        null as role_id
+        FROM sys_menu sys_menu
+        WHERE sys_menu.parent_id is null
+        <if test="name != null and name!=''">
+            and sys_menu.name like concat('%',#{name}, '%')
+        </if>
+    </select>
+
+    <select id="findByRoleIdAndParentId" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumns"/>
+        FROM sys_role_menu srm
+        JOIN sys_menu sys_menu ON srm.menu_id = sys_menu.id
+        <if test="roleId != null">
+        and srm.role_id = #{roleId}
+        </if>
+        and sys_menu.parent_id = #{parentId}
+    </select>
+</mapper>

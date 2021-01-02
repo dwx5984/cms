@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.sys.mapper.RoleMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.sys.entity.Role">
+    <id column="sys_role_id" property="id" />
+    <result column="sys_role_name" property="name" />
+    <result column="sys_role_type" property="type" />
+    <result column="sys_role_status" property="status" />
+  </resultMap>
+
+  <sql id="baseColumns">
+    sys_role.id AS sys_role_id,
+    sys_role.name AS sys_role_name,
+    sys_role.type AS sys_role_type,
+    sys_role.`status` AS sys_role_status
+  </sql>
+
+    <select id="findPermission" resultType="com.lcx.cms.entity.sys.vo.LayTreeMenuVO">
+      SELECT DISTINCT
+             sm.name AS title,
+             sm.id AS id,
+             if(srm.id IS NULL , false, true) AS  checked
+      FROM sys_menu sm
+             LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
+        AND role_id = #{roleId}
+      WHERE sm.status = 0
+      <if test="parentId != null">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="parentId == null">
+        AND sm.parent_id IS NULL
+      </if>
+      ORDER BY sm.sort
+    </select>
+  <select id="findByUserId" resultMap="baseResultMap">
+    select <include refid="baseColumns"/>
+    from sys_role join sys_role_user sru on sys_role.id = sru.role_id and sru.user_id = #{userId}
+  </select>
+</mapper>

@@ -1,0 +1,89 @@
+package ${package.Controller};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+#if(${cfg.crud})
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import com.lcx.cms.base.Response;
+import com.lcx.cms.enums.Bool;
+
+#end
+
+import ${package.Service}.${table.serviceName};
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+#if(${cfg.crud})
+import ${package.Entity}.${entity};
+#end
+
+/**
+ * ${table.comment} controller
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@RestController
+@RequestMapping("/rest/${table.entityPath}s")
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+#set($entityInstanceName = $entity.substring(0,1).toLowerCase() + $entity.substring(1))
+
+    @Autowired
+    private ${table.serviceName} ${entityInstanceName}Service;
+
+    @Autowired
+    public ${table.controllerName}(${table.serviceName} ${entityInstanceName}Service){
+        this.${entityInstanceName}Service= ${entityInstanceName}Service;
+    }
+
+#if(${cfg.crud})
+
+/**
+ * 查询${entity}
+ *
+ * @param id
+ *
+ * @return ${entity}Domain
+ */
+@GetMapping("/{id}")
+public Result get(@PathVariable Long id){
+    ${entity} ${entityInstanceName} = ${entityInstanceName}Service.getById(id);
+        return Result.OK(${entityInstanceName});
+        }
+
+
+/**
+ * 新增${entity}
+ *
+ * @param ${entityInstanceName}
+ *
+ * @return ${entity}Domain
+ */
+@PostMapping
+public Result save(@RequestBody ${entity} ${entityInstanceName}){
+    ${entityInstanceName}Service.save(${entityInstanceName});
+        return Result.OK(${entityInstanceName});
+    }
+
+/**
+ * 更新${entity}
+ *
+ * @param ${entityInstanceName}
+ *
+ * @return ${entity}Domain
+ */
+@PutMapping("/{id}")
+public Result update(@PathVariable Long id,@RequestBody ${entity} ${entityInstanceName}) {
+    boolean success = ${entityInstanceName}Service.updateById(${entityInstanceName});
+    return Result.OK(success ? Bool.Yes : Bool.No);
+    }
+
+#end
+        }
