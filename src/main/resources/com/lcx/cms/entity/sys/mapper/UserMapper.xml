@@ -25,6 +25,8 @@
         <result column="status" property="role.status"/>
     </resultMap>
 
+
+
     <sql id="baseColumns">
         sys_user.id AS sys_user_id,
     sys_user.gender AS sys_user_gender,
@@ -48,32 +50,40 @@
                  JOIN sys_role_user sru ON sys_user.id = sru.user_id
                  JOIN sys_role sr ON sru.role_id = sr.id
         <where>
-            <if test="role != null and role.id != null">
-                and sr.id = #{role.id}
+            <if test="user.role != null and user.role.id != null">
+                and sr.id = #{user.role.id}
             </if>
-            <if test="name != null and name != ''">
-                and sys_user.name like concat('%',#{name},'%')
+            <if test="user.name != null and user.name != ''">
+                and sys_user.name like concat('%',#{user.name},'%')
             </if>
-            <if test="status != null">
-                and sys_user.status = #{status}
+            <if test="user.status != null">
+                and sys_user.status = #{user.status}
             </if>
-            <if test="number != null and number != ''">
-                and sys_user.number = #{status}
+            <if test="user.number != null and user.number != ''">
+                and sys_user.number = #{user.number}
             </if>
-            <if test="mobile != null and mobile != ''">
-                and sys_user.mobile = #{mobile}
+            <if test="user.mobile != null and user.mobile != ''">
+                and sys_user.mobile = #{user.mobile}
             </if>
-            <if test="email != null and email != ''">
-                and sys_user.email = #{email}
+            <if test="user.email != null and user.email != ''">
+                and sys_user.email = #{user.email}
             </if>
-            <if test="address != null and address != ''">
-                and (sys_user.address like concat('%',#{address},'%')
-                     or sys_user.country like concat('%',#{address},'%')
-                     or sys_user.province like concat('%',#{address},'%')
-                     or sys_user.city like concat('%',#{address},'%')
-                     or sys_user.district like concat('%',#{address},'%')
+            <if test="user.address != null and user.address != ''">
+                and (sys_user.address like concat('%',#{user.address},'%')
+                     or sys_user.country like concat('%',#{user.address},'%')
+                     or sys_user.province like concat('%',#{user.address},'%')
+                     or sys_user.city like concat('%',#{user.address},'%')
+                     or sys_user.district like concat('%',#{user.address},'%')
                      )
             </if>
         </where>
+    </select>
+    <select id="getWithRole" resultMap="withRoleMap">
+        SELECT <include refid="baseColumns"/>,
+        sr.*
+        FROM sys_user
+        JOIN sys_role_user sru ON sys_user.id = sru.user_id
+        JOIN sys_role sr ON sru.role_id = sr.id
+        where sys_user.id = #{userId}
     </select>
 </mapper>

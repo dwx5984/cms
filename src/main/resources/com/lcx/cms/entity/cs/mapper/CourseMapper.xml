@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.CourseMapper">
+
+    <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.Course">
+        <id column="cms_course_id" property="id"/>
+        <result column="cms_course_no" property="no"/>
+        <result column="cms_course_name" property="name"/>
+        <result column="cms_course_credit" property="credit"/>
+        <result column="cms_course_period" property="period"/>
+        <result column="cms_course_subject" property="subject"/>
+        <result column="cms_course_create_time" property="createTime"/>
+        <result column="cms_course_del_flag" property="delFlag"/>
+        <result column="attendedHours" property="attendedHours"/>
+    </resultMap>
+
+    <resultMap id="compares" type="com.lcx.cms.entity.sys.entity.User">
+        <id column="sys_user_id" property="id"/>
+        <result column="sys_user_gender" property="gender"/>
+        <result column="sys_user_name" property="name"/>
+        <result column="sys_user_number" property="number"/>
+        <result column="sys_user_password" property="password"/>
+        <result column="sys_user_mobile" property="mobile"/>
+        <result column="sys_user_email" property="email"/>
+        <result column="sys_user_country" property="country"/>
+        <result column="sys_user_province" property="province"/>
+        <result column="sys_user_city" property="city"/>
+        <result column="sys_user_district" property="district"/>
+        <result column="sys_user_address" property="address"/>
+        <result column="sys_user_status" property="status"/>
+        <result column="sys_user_create_time" property="createTime"/>
+        <collection property="courses" column="sys_user_id" select="findCompareByUser"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        cms_course.id AS cms_course_id,
+    cms_course.no AS cms_course_no,
+    cms_course.name AS cms_course_name,
+    cms_course.credit AS cms_course_credit,
+    cms_course.period AS cms_course_period,
+    cms_course.subject AS cms_course_subject,
+    cms_course.create_time AS cms_course_create_time,
+    cms_course.del_flag AS cms_course_del_flag
+    </sql>
+    <sql id="userColumns">
+        sys_user.id AS sys_user_id,
+    sys_user.gender AS sys_user_gender,
+    sys_user.name AS sys_user_name,
+    sys_user.number AS sys_user_number,
+    sys_user.password AS sys_user_password,
+    sys_user.mobile AS sys_user_mobile,
+    sys_user.email AS sys_user_email,
+    sys_user.country AS sys_user_country,
+    sys_user.province AS sys_user_province,
+    sys_user.city AS sys_user_city,
+    sys_user.district AS sys_user_district,
+    sys_user.address AS sys_user_address,
+    sys_user.status AS sys_user_status,
+    sys_user.create_time AS sys_user_create_time
+    </sql>
+
+    <select id="findWithAttendHoursByIds" resultMap="baseResultMap">
+        SELECT <include refid="baseColumns"/>,
+        ifnull(SUM(car.hour), 0) as attendedHours
+        FROM cms_course
+        JOIN cms_teacher_course ctc ON cms_course.id = ctc.course_id AND user_id = #{userId}
+        LEFT JOIN cms_attend_record car ON cms_course.id = car.course_id AND car.user_id = #{userId}
+        <if test="course.name != null and course.name !=''">
+            where cms_course.name like concat('%', #{course.name}, '%')
+        </if>
+        GROUP BY cms_course.id,
+        cms_course.no,
+        cms_course.name,
+        cms_course.credit,
+        cms_course.period,
+        cms_course.subject,
+        cms_course.create_time,
+        cms_course.del_flag
+    </select>
+
+    <select id="compareList" resultMap="compares">
+        select <include refid="userColumns"/>
+        from sys_user where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findCompareByUser" resultMap="baseResultMap">
+        SELECT <include refid="baseColumns"/>,
+        ifnull(SUM(car.hour), 0) as attendedHours
+        FROM cms_course
+        JOIN cms_teacher_course ctc ON cms_course.id = ctc.course_id AND user_id = #{userId}
+        LEFT JOIN cms_attend_record car ON cms_course.id = car.course_id AND car.user_id = #{userId}
+        GROUP BY cms_course.id,
+        cms_course.no,
+        cms_course.name,
+        cms_course.credit,
+        cms_course.period,
+        cms_course.subject,
+        cms_course.create_time,
+        cms_course.del_flag
+    </select>
+</mapper>

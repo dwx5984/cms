@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <script src="../page/js/course/course.js?v=0.0.2"></script>
+</head>
+<title>课程管理</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>课程管理</h1>
+        <form class="layui-form" lay-filter="searchForm">
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <label class="layui-form-label">课程名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="queryName" name="name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </form>
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <button class="layui-btn layui-btn-normal" onclick="add()">新增课程</button>
+            </div>
+            <div class="layui-col-md3" style="text-align: right">
+                <button class="layui-btn" onclick="search()">查询</button>
+                <button class="layui-btn" onclick="reset()">重置</button>
+            </div>
+        </div>
+    </div>
+<div id="data_table" lay-filter="data_table">
+
+</div>
+
+<form id="add"  class="layui-form" lay-filter="add" hidden>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程编号</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="no" required  lay-verify="no" placeholder="请输入课程编号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="name" required  lay-verify="name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">学分</label>
+        <div class="layui-input-block">
+            <input type="number" style="width: 88%;" name="credit" required  lay-verify="credit" placeholder="请输入学分" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课时</label>
+        <div class="layui-input-block">
+            <input type="number" style="width: 88%;" name="period" required  lay-verify="period" placeholder="请输入课时" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">学科</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="subject" required  lay-verify="subject" placeholder="请输入学科" autocomplete="off" class="layui-input">
+
+        </div>
+    </div>
+</form>
+
+    <div id="match"  class="demo-transfer"  hidden>
+    </div>
+
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-xs" lay-event="match">分配</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</div>
+</body>
+</html>
+

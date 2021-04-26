@@ -2,6 +2,8 @@ package com.lcx.cms.entity.sys.entity;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
@@ -22,17 +24,18 @@ import lombok.experimental.FieldDefaults;
 @TableName("sys_role_user")
 public class RoleUser {
 
-    Long id;
+    @TableId(value="id", type= IdType.AUTO)
+    Integer id;
 
     /**
      * 用户id
      */
-    Long userId;
+    Integer userId;
 
     /**
      * 角色id
      */
-    Long roleId;
+    Integer roleId;
 
     /**
      * 创建时间
@@ -42,6 +45,6 @@ public class RoleUser {
     /**
      * 创建人
      */
-    Long createBy;
+    Integer createBy;
 
 }

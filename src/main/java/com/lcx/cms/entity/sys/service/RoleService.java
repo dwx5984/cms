@@ -31,7 +31,7 @@ public interface RoleService extends IService<Role> {
      * @param id
      * @return Role
      */
-    Role findWithMenus(Long id);
+    Role findWithMenus(Integer id);
 
     /**
      * 分页
@@ -40,7 +40,7 @@ public interface RoleService extends IService<Role> {
      */
     Page<Role> pageRole(Role role);
 
-    List<LayTreeMenuVO> findPermission(Long roleId);
+    List<LayTreeMenuVO> findPermission(Integer roleId);
 
-    Bool updatePermission(Long roleId, List<LayTreeMenuVO> layTreeMenuVOs);
+    Bool updatePermission(Integer roleId, List<LayTreeMenuVO> layTreeMenuVOs);
 }

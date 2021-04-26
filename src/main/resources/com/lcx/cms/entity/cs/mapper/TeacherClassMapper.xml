@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.TeacherClassMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.TeacherClass">
+    <id column="cms_teacher_class_id" property="id" />
+    <result column="cms_teacher_class_user_id" property="userId" />
+    <result column="cms_teacher_class_class_id" property="classId" />
+  </resultMap>
+
+  <sql id="baseColumns">
+    cms_teacher_class.id AS cms_teacher_class_id,
+    cms_teacher_class.user_id AS cms_teacher_class_user_id,
+    cms_teacher_class.class_id AS cms_teacher_class_class_id,
+  </sql>
+</mapper>

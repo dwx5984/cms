@@ -15,11 +15,11 @@ import java.util.List;
 */
 public interface MenuMapper extends BaseMapper<Menu> {
 
-    List<Menu> findMenusByUser(Long userId);
+    List<Menu> findMenusByUser(Integer userId);
 
-    List<Menu> findMenusByRoleId(Long roleId);
+    List<Menu> findMenusByRoleId(Integer roleId);
 
-    List<Menu> findByRoleIdAndParentId(@Param("roleId") Long roleId, @Param("parentId") Long parentId);
+    List<Menu> findByRoleIdAndParentId(@Param("roleId") Integer roleId, @Param("parentId") Integer parentId);
 
-    List<Menu> pageAll(Page<Menu> page, Menu menu);
+    List<Menu> pageAll(Page<Menu> page, @Param("menu") Menu menu);
 }

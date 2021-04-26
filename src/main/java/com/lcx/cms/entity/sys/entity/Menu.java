@@ -2,7 +2,9 @@ package com.lcx.cms.entity.sys.entity;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
@@ -26,7 +28,8 @@ import lombok.experimental.FieldDefaults;
 @TableName("sys_menu")
 public class Menu {
 
-    Long id;
+    @TableId(value="id", type= IdType.AUTO)
+    Integer id;
 
     /**
      * 菜单名
@@ -52,11 +55,17 @@ public class Menu {
     /**
      * 上级菜单
      */
-    Long parentId;
+    Integer parentId;
 
     Long createBy;
 
     Date createTime;
+
+    /**
+     * 父级
+     */
+    @TableField(exist = false)
+    Menu parent;
 
     /**
      * 子菜单

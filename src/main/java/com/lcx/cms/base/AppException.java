@@ -41,4 +41,19 @@ public class AppException extends RuntimeException {
     public static AppException unAuthException() {
         return new AppException(Response.FAIL, "用户未登录");
     }
+    public static AppException mobileExits() {
+        return new AppException(Response.FAIL, "手机号已被使用");
+    }
+
+    public static AppException numberExits() {
+        return new AppException(Response.FAIL, "工号已被使用");
+    }
+
+    public static AppException illegal(String msg) {
+        return new AppException(Response.FAIL, msg);
+    }
+
+    public static AppException emailExits() {
+        return new AppException(Response.FAIL, "邮箱已被使用");
+    }
 }

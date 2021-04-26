@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <script src="../page/js/course/exchange.js?v=0.0.2"></script>
+</head>
+<title>调课审核</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>调课审核</h1>
+        <form class="layui-form" lay-filter="searchForm">
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <label class="layui-form-label">申请状态</label>
+                <div class="layui-input-inline">
+                    <select name="status" lay-verify="required" lay-search="">
+                        <option value="PENDING" selected>待审核</option>
+                        <option value="PASS">通过</option>
+                        <option value="REJECT">拒绝</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="layui-row">
+            <div class="layui-col-md3" style="text-align: right">
+                <button class="layui-btn" onclick="search()">查询</button>
+                <button class="layui-btn" onclick="reset()">重置</button>
+            </div>
+        </div>
+    </div>
+<div id="data_table" lay-filter="data_table">
+
+</div>
+
+<form id="add"  class="layui-form" lay-filter="add" hidden>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程开始时间</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="startTime" id="startTime" readonly required    autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="endTime" id="endTime" readonly required  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">调课类型</label>
+        <div class="layui-input-block">
+            <select name="type" lay-verify="required" lay-search="">
+                <option value="REPLACE" selected>代课</option>
+                <option value="LEAVE">请假</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">选择上课老师</label>
+        <div class="layui-input-block">
+            <select name="targetUserId" lay-verify="required" lay-search="" id="teacher">
+
+            </select>
+        </div>
+    </div>
+
+</form>
+
+    <div id="match"  class="demo-transfer"  hidden>
+    </div>
+
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-xs" lay-event="PASS">通过</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="REJECT">不通过</a>
+</script>
+</div>
+</body>
+</html>
+

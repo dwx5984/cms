@@ -16,7 +16,7 @@ import java.util.Map;
 */
 public interface RoleMapper extends BaseMapper<Role> {
 
-    List<LayTreeMenuVO> findPermission(@Param("roleId") Long roleId, @Param("parentId") Long parentId);
+    List<LayTreeMenuVO> findPermission(@Param("roleId") Integer roleId, @Param("parentId") Integer parentId);
 
-    Role findByUserId(Long userId);
+    Role findByUserId(Integer userId);
 }

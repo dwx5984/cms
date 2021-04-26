@@ -46,7 +46,7 @@ public class RoleController {
      * @return Role
      */
     @GetMapping("/{id}")
-    public Response findWithMenus(@PathVariable Long id) {
+    public Response findWithMenus(@PathVariable Integer id) {
         return Response.OK(roleService.findWithMenus(id));
     }
 
@@ -62,6 +62,11 @@ public class RoleController {
         return Response.OK(role);
     }
 
+    @PostMapping("delete/{id}")
+    public Response delete(@PathVariable Integer id) {
+        return Response.OK(roleService.removeById(id));
+    }
+
     /**
      * 更新Role
      *
@@ -69,7 +74,7 @@ public class RoleController {
      * @return Role
      */
     @PutMapping("{id}")
-    public Response updateWithMenu(@PathVariable Long id, @RequestBody Role role) {
+    public Response updateWithMenu(@PathVariable Integer id, @RequestBody Role role) {
         role.setId(id);
         return Response.OK(roleService.updateWithMenu(role));
     }
@@ -88,12 +93,12 @@ public class RoleController {
     }
 
     @GetMapping("findPermission/{roleId}")
-    public List<LayTreeMenuVO> findPermission(@PathVariable Long roleId) {
+    public List<LayTreeMenuVO> findPermission(@PathVariable Integer roleId) {
         return roleService.findPermission(roleId);
     }
 
     @PostMapping("updatePermission/{roleId}")
-    public Response updatePermission(@RequestBody List<LayTreeMenuVO> layTreeMenuVOs, @PathVariable Long roleId) {
+    public Response updatePermission(@RequestBody List<LayTreeMenuVO> layTreeMenuVOs, @PathVariable Integer roleId) {
         return Response.OK(roleService.updatePermission(roleId, layTreeMenuVOs));
     }
 

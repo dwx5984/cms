@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.AttendRecordMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.AttendRecord">
+    <id column="cms_attend_record_id" property="id" />
+    <result column="cms_attend_record_user_id" property="userId" />
+    <result column="cms_attend_record_course_id" property="courseId" />
+    <result column="cms_attend_record_status" property="status" />
+    <result column="cms_attend_record_attend_start_time" property="attendStartTime" />
+    <result column="cms_attend_record_attend_end_time" property="attendEndTime" />
+    <result column="cms_attend_record_create_time" property="createTime" />
+    <result column="cms_attend_record_hour" property="hour" />
+  </resultMap>
+
+  <resultMap id="withCourse" type="com.lcx.cms.entity.cs.entity.AttendRecord">
+    <result column="user_id" property="userId"/>
+    <result column="course_id" property="courseId"/>
+    <result column="totalHours" property="totalHours"/>
+    <result column="hour" property="hour"/>
+    <association property="course" column="course_id" select="com.lcx.cms.entity.cs.mapper.CourseMapper.selectById"/>
+  </resultMap>
+
+  <resultMap id="baseWithCourse" extends="baseResultMap" type="com.lcx.cms.entity.cs.entity.AttendRecord">
+    <association property="course" column="cms_attend_record_course_id" select="com.lcx.cms.entity.cs.mapper.CourseMapper.selectById"/>
+  </resultMap>
+
+
+  <sql id="baseColumns">
+    cms_attend_record.id AS cms_attend_record_id,
+    cms_attend_record.user_id AS cms_attend_record_user_id,
+    cms_attend_record.course_id AS cms_attend_record_course_id,
+    cms_attend_record.status AS cms_attend_record_status,
+    cms_attend_record.hour AS cms_attend_record_hour,
+    cms_attend_record.attend_start_time AS cms_attend_record_attend_start_time,
+    cms_attend_record.attend_end_time AS cms_attend_record_attend_end_time,
+    cms_attend_record.create_time AS cms_attend_record_create_time
+  </sql>
+    <select id="findByTime" resultMap="baseResultMap">
+      select <include refid="baseColumns"/>
+      from cms_attend_record
+      where
+      date_format(attend_start_time, '%Y-%m-%d') &gt;= date_format(#{startDate}, '%Y-%m-%d')
+      and date_format(attend_end_time, '%Y-%m-%d') &lt;= date_format(#{endDate}, '%Y-%m-%d')
+      and user_id = #{userId}
+    </select>
+  <select id="findMonth" resultMap="withCourse">
+    SELECT user_id, course_id
+    ,sum(hour) as 'totalHours'
+    FROM cms_attend_record
+    WHERE attend_start_time &gt;= #{firstDayMonth}
+    AND attend_end_time &lt;= #{endDayMonth}
+    AND user_id = #{userId}
+    GROUP BY course_id,user_id
+  </select>
+  <select id="pageAll" resultMap="baseWithCourse">
+    SELECT <include refid="baseColumns"/>
+    FROM cms_attend_record
+    WHERE  user_id = #{build.userId}
+    and course_id = #{build.courseId}
+  </select>
+</mapper>

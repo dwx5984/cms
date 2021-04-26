@@ -37,7 +37,7 @@ public class MenuController {
      */
     @GetMapping("/{id}")
     @ResponseBody
-    public Response get(@PathVariable Long id) {
+    public Response get(@PathVariable Integer id) {
         Menu menu = menuService.getById(id);
         return Response.OK(menu);
     }
@@ -59,29 +59,14 @@ public class MenuController {
      * @return MenuDomain
      */
     @GetMapping("/page")
-    public Response page(Long page, Long limit, @RequestParam(required = false) String name) {
+    @ResponseBody
+    public Response page(Long page, Long limit, @RequestParam(required = false) Integer parentId) {
         Menu menu = new Menu();
-        menu.setName(name);
+        menu.setParentId(parentId);
+        menu.setPage(new Page<>(page,limit));
         return Response.OK(menuService.pageAll(menu));
     }
 
-
-
-
-
-//    /**
-//     * 新增Menu
-//     *
-//     * @param menu
-//     * @return MenuDomain
-//     */
-//    @PostMapping
-//    @ResponseBody
-//    public Response save(@RequestBody Menu menu) {
-//        // TODO 同时把菜单分配给管理员
-//        menuService.save(menu);
-//        return Response.OK(menu);
-//    }
 
     /**
      * 更新Menu
@@ -91,9 +76,16 @@ public class MenuController {
      */
     @PutMapping("/{id}")
     @ResponseBody
-    public Response update(@PathVariable Long id, @RequestBody Menu menu) {
+    public Response update(@PathVariable Integer id, @RequestBody Menu menu) {
+        menu.setId(id);
         boolean success = menuService.updateById(menu);
         return Response.OK(success ? Bool.Yes : Bool.No);
+    }
+
+    @PostMapping("delete/{id}")
+    @ResponseBody
+    public Response delete(@PathVariable Long id) {
+        return Response.OK(menuService.removeById(id));
     }
 
 }

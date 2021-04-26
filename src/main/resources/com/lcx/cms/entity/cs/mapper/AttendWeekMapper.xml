@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.AttendWeekMapper">
+
+    <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.AttendWeek">
+        <id column="cms_attend_week_id" property="id"/>
+        <result column="cms_attend_week_start_time" property="startTime"/>
+        <result column="cms_attend_week_end_time" property="endTime"/>
+        <result column="cms_attend_week_user_id" property="userId"/>
+        <result column="cms_attend_week_create_time" property="createTime"/>
+        <result column="cms_attend_week_course_ids" property="courseIds"/>
+        <result column="cms_attend_week_hours" property="hours"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        cms_attend_week.id AS cms_attend_week_id,
+    cms_attend_week.course_ids AS cms_attend_week_course_ids,
+    cms_attend_week.hours AS cms_attend_week_hours,
+    cms_attend_week.start_time AS cms_attend_week_start_time,
+    cms_attend_week.end_time AS cms_attend_week_end_time,
+    cms_attend_week.user_id AS cms_attend_week_user_id,
+    cms_attend_week.create_time AS cms_attend_week_create_time
+    </sql>
+    <select id="pageAll" resultMap="baseResultMap">
+        select
+        <include refid="baseColumns"/>
+        from cms_attend_week
+        <if test="week.userId != null">
+            where user_id = #{week.userId}
+        </if>
+        and import_role != 200
+    </select>
+</mapper>

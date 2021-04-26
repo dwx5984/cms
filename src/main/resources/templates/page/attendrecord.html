@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <script src="../page/js/course/attendrecord.js?v=0.0.3"></script>
+</head>
+<title>课时确认</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>课时确认</h1>
+        <form class="layui-form" lay-filter="searchForm">
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <label class="layui-form-label">课程名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="queryName" name="name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </form>
+        <div class="layui-row">
+            <div class="layui-col-md3" style="text-align: right">
+                <button class="layui-btn" onclick="search()">查询</button>
+                <button class="layui-btn" onclick="reset()">重置</button>
+            </div>
+        </div>
+    </div>
+<div id="data_table" lay-filter="data_table">
+
+</div>
+
+<form id="add"  class="layui-form" lay-filter="add" hidden>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程编号</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="no"  id="no" readonly required lay-verify="no" placeholder="请输入课程编号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">课程名称</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 88%;" name="name" id="name" readonly required lay-verify="name" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label"  style="width: 106px;">上课开始时间</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" name="startTime" id="attendStartTime">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label"  style="width: 106px;">上课结束时间</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" name="endTime" id="attendEndTime">
+        </div>
+    </div>
+
+</form>
+
+    <div id="attend"  class="demo-transfer"  hidden>
+    </div>
+
+<script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-xs" lay-event="add">课时录入</a>
+</script>
+</div>
+</body>
+</html>
+

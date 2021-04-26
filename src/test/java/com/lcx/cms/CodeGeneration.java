@@ -51,11 +51,14 @@ public class CodeGeneration {
     /**
      * 末层子包名
      */
-    private String moduleName = "sys";
+    private String moduleName = "cs";
 
-    private String[] tablePrefix = {"cms_", "log_", "srv_", "ocr_", "mg_impl_","sys_dict_", "exh", "sys_"};
+    private String[] tablePrefix = {"cms_","sys_"};
 
-    private String[] includeTable = {"sys_role_user"};
+    private String[] includeTable = {"cms_chat"};
+    /**
+     ,
+     */
 
     /**
      * MySQL 生成演示

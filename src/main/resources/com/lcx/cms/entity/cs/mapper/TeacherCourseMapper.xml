@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.TeacherCourseMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.TeacherCourse">
+    <id column="cms_teacher_course_id" property="id" />
+    <result column="cms_teacher_course_course_id" property="courseId" />
+    <result column="cms_teacher_course_user_id" property="userId" />
+    <result column="cms_teacher_course_original_user_id" property="originalUserId" />
+    <result column="cms_teacher_course_create_time" property="createTime" />
+    <result column="cms_teacher_course_status" property="status" />
+  </resultMap>
+
+  <sql id="baseColumns">
+    cms_teacher_course.id AS cms_teacher_course_id,
+    cms_teacher_course.course_id AS cms_teacher_course_course_id,
+    cms_teacher_course.user_id AS cms_teacher_course_user_id,
+    cms_teacher_course.original_user_id AS cms_teacher_course_original_user_id,
+    cms_teacher_course.create_time AS cms_teacher_course_create_time,
+    cms_teacher_course.status AS cms_teacher_course_status,
+  </sql>
+</mapper>

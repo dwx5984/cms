@@ -2,6 +2,8 @@ package com.lcx.cms.entity.sys.entity;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.io.Serializable;
@@ -21,13 +23,14 @@ import lombok.experimental.FieldDefaults;
 @TableName("sys_role_menu")
 public class RoleMenu {
 
-    Long id;
+    @TableId(value="id", type= IdType.AUTO)
+    Integer id;
 
     /**
      * 角色id
      */
-    Long roleId;
+    Integer roleId;
 
-    Long menuId;
+    Integer menuId;
 
 }

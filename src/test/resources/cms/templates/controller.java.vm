@@ -1,10 +1,10 @@
 package ${package.Controller};
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 #if(${cfg.crud})
+import com.lcx.cms.base.Response;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.lcx.cms.base.Response;
@@ -53,9 +53,9 @@ public class ${table.controllerName} {
  * @return ${entity}Domain
  */
 @GetMapping("/{id}")
-public Result get(@PathVariable Long id){
+public Response get(@PathVariable Integer id){
     ${entity} ${entityInstanceName} = ${entityInstanceName}Service.getById(id);
-        return Result.OK(${entityInstanceName});
+        return Response.OK(${entityInstanceName});
         }
 
 
@@ -67,9 +67,9 @@ public Result get(@PathVariable Long id){
  * @return ${entity}Domain
  */
 @PostMapping
-public Result save(@RequestBody ${entity} ${entityInstanceName}){
+public Response save(@RequestBody ${entity} ${entityInstanceName}){
     ${entityInstanceName}Service.save(${entityInstanceName});
-        return Result.OK(${entityInstanceName});
+        return Response.OK(${entityInstanceName});
     }
 
 /**
@@ -80,9 +80,9 @@ public Result save(@RequestBody ${entity} ${entityInstanceName}){
  * @return ${entity}Domain
  */
 @PutMapping("/{id}")
-public Result update(@PathVariable Long id,@RequestBody ${entity} ${entityInstanceName}) {
+public Response update(@PathVariable Integer id,@RequestBody ${entity} ${entityInstanceName}) {
     boolean success = ${entityInstanceName}Service.updateById(${entityInstanceName});
-    return Result.OK(success ? Bool.Yes : Bool.No);
+    return Response.OK(success ? Bool.Yes : Bool.No);
     }
 
 #end

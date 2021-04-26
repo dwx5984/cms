@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/lay/mod/xmSelect.js"></script>
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <script src="../page/js/course/attendcompare.js?v=0.0.3"></script>
+</head>
+<title>课时对比</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>课时对比</h1>
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <form class="layui-form" lay-filter="searchForm">
+<!--                    <div class="layui-inline">-->
+<!--                        <label class="layui-form-label">选择老师</label>-->
+<!--                        <div class="layui-input-inline">-->
+<!--&lt;!&ndash;                        <div id="sel" style="width: 800px;margin-top: 50px;margin-left: 39px;" class="xm-select-demo">&ndash;&gt;-->
+<!--                            <select name="modules" lay-verify="required" lay-search="" id="teacher1">-->
+
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="layui-inline">
+                        <label class="layui-form-label">选择月份</label>
+                        <div class="layui-input-inline">
+                            <!--                        <div id="sel" style="width: 800px;margin-top: 50px;margin-left: 39px;" class="xm-select-demo">-->
+                            <input name="modules1" class="layui-input" lay-verify="required" lay-search="" id="month"/>
+                        </div>
+                    </div>
+                </form>
+                <div class="layui-row">
+                    <div class="layui-col-md12" style="text-align: right">
+                        <button class="layui-btn" onclick="search('ALL')">查询所有数据</button>
+                        <button class="layui-btn" onclick="search('MATCH')">查询课时匹配数据</button>
+                        <button class="layui-btn" onclick="search('NOT_MATCH')">查询课时不匹配数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--    <div class="layui-card">-->
+<!--        <div class="layui-col-md12" id="header" style="background-color: #f6f6f6;line-height: 20px;padding: 10px;">2001-01-01 教师课时校对</div>-->
+<!--        <div class="layui-col-md12" style="padding: 10px;">-->
+<!--&lt;!&ndash;            <div class="layui-col-md12">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>教师名称：</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <label id="name">教师名称</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="layui-row grid-demo grid-demo-bg1">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="layui-col-md6" style="padding-top: 10px;">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="layui-col-md12">&ndash;&gt;-->
+<!--&lt;!&ndash;                            教师录入月课时：&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="layui-col-md6">&ndash;&gt;-->
+<!--&lt;!&ndash;                        内部列&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="layui-card">-->
+<!--        <div class="layui-card-body" style="font-size: 18px;">-->
+<!--            <div style="margin: 50px;">-->
+<!--                教师名称：<label>教师名称</label>-->
+<!--            </div>-->
+<!--            <div style="margin: 50px;">-->
+<!--            教师当月录入课时：<label>10</label>-->
+<!--            </div>-->
+<!--            <div style="margin: 50px;">-->
+<!--            秘书当月录入课时：<label>10</label>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+
+
+    <div id="data_table" lay-filter="data_table">
+
+</div>
+
+    <div id="recordDia" style="margin-top: 10px;" hidden>
+        <div style="margin-bottom: 20px;">
+            <h1>上课记录</h1>
+        </div>
+        <div id="table" lay-filter="data_table">
+
+        </div>
+    </div>
+
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-xs" lay-event="record">上课记录</a>
+    </script>
+</div>
+</body>
+</html>
+

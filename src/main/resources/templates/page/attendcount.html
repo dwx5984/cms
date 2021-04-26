@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <script src="../page/js/course/attendcount.js?v=0.0.3"></script>
+</head>
+<title>课时统计</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>课时统计</h1>
+        <div class="layui-row">
+            <div class="layui-col-md9">
+                <form class="layui-form" lay-filter="searchForm">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">选择老师</label>
+                        <div class="layui-input-inline">
+                            <select name="modules" lay-verify="required" lay-search="" id="teacher">
+
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<div id="data_table" lay-filter="data_table">
+
+</div>
+
+    <div id="recordDia" style="margin-top: 10px;" hidden>
+        <div style="margin-bottom: 20px;">
+            <h1>上课记录</h1>
+        </div>
+        <div id="table" lay-filter="data_table">
+
+        </div>
+    </div>
+
+    <script type="text/html" id="bar">
+        <a class="layui-btn layui-btn-xs" lay-event="record">上课记录</a>
+    </script>
+</div>
+</body>
+</html>
+

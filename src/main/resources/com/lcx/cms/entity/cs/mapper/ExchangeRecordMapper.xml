@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.ExchangeRecordMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.ExchangeRecord">
+    <id column="cms_exchange_record_id" property="id" />
+    <result column="cms_exchange_record_type" property="type" />
+    <result column="cms_exchange_record_status" property="status" />
+    <result column="cms_exchange_record_create_time" property="createTime" />
+    <result column="cms_exchange_record_start_time" property="startTime" />
+    <result column="cms_exchange_record_end_time" property="endTime" />
+    <result column="cms_exchange_record_course_id" property="courseId" />
+    <result column="cms_exchange_record_user_id" property="userId" />
+    <result column="cms_exchange_record_target_user_id" property="targetUserId" />
+  </resultMap>
+
+  <resultMap id="withUserAndCourse" extends="baseResultMap" type="com.lcx.cms.entity.cs.entity.ExchangeRecord">
+    <association property="course" column="cms_exchange_record_course_id" select="com.lcx.cms.entity.cs.mapper.CourseMapper.selectById"/>
+    <association property="user" column="cms_exchange_record_user_id" select="com.lcx.cms.entity.sys.mapper.UserMapper.selectById"/>
+    <association property="targetUser" column="cms_exchange_record_target_user_id" select="com.lcx.cms.entity.sys.mapper.UserMapper.selectById"/>
+  </resultMap>
+
+  <sql id="baseColumns">
+    cms_exchange_record.id AS cms_exchange_record_id,
+    cms_exchange_record.type AS cms_exchange_record_type,
+    cms_exchange_record.status AS cms_exchange_record_status,
+    cms_exchange_record.create_time AS cms_exchange_record_create_time,
+    cms_exchange_record.start_time AS cms_exchange_record_start_time,
+    cms_exchange_record.end_time AS cms_exchange_record_end_time,
+    cms_exchange_record.course_id AS cms_exchange_record_course_id,
+    cms_exchange_record.user_id AS cms_exchange_record_user_id,
+    cms_exchange_record.target_user_id AS cms_exchange_record_target_user_id
+  </sql>
+  <select id="pageAll" resultMap="withUserAndCourse">
+    select <include refid="baseColumns"/>
+    from cms_exchange_record
+    <if test="exchangeRecord.status != null">
+      where status = #{exchangeRecord.status.value}
+    </if>
+  </select>
+</mapper>

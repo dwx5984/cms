@@ -31,7 +31,7 @@ public class RequestUtil {
      * 获取当前用户id
      * @return
      */
-    public static Long getCurrentUserId() {
-        return (Long) Optional.ofNullable(getSession().getAttribute(SESSION_KEY)).orElseThrow(AppException::unAuthException);
+    public static Integer getCurrentUserId() {
+        return (Integer) Optional.ofNullable(getSession().getAttribute(SESSION_KEY)).orElseThrow(AppException::unAuthException);
     }
 }

@@ -4,6 +4,8 @@ var tree;
 var layer;
 var util;
 var form;
+
+var dataTable;
 layui.use(['table', 'tree', 'util'], function(){
     table = layui.table
     tree = layui.tree
@@ -11,7 +13,7 @@ layui.use(['table', 'tree', 'util'], function(){
         ,util = layui.util
         ,form = layui.form;
 
-    table.render({
+    dataTable = table.render({
         elem: '#roles_table'
         ,url:'/roles/page'
         ,totalRow: true
@@ -42,6 +44,11 @@ layui.use(['table', 'tree', 'util'], function(){
                     return "正常"
                 return "失效"
                 }}
+            ,{field:'type', title: '角色类型', templet: function(d){
+                        if (d.type === 'ADMIN')
+                            return "管理员"
+                        return "普通用户"
+                    }}
             ,{fixed: 'right', title:'操作', toolbar: '#barRole', width:150}
         ]]
     });
@@ -52,7 +59,23 @@ layui.use(['table', 'tree', 'util'], function(){
         //console.log(obj)
         if(obj.event === 'del'){
             layer.confirm('真的删除行么', function(index){
-                obj.del();
+                if (obj.data.type === 'ADMIN') {
+                    layer.msg('无法删除管理员', {icon:2})
+                    return
+                }
+                $.ajax({
+                    type: "post",
+                    url: '/roles/delete/' + obj.data.id,
+                    async: false,
+                    success: function (data) {
+                        if (data.data) {
+                            layer.msg('删除成功', {icon:1})
+                            dataTable.reload({page: {curr: 1}})
+                        } else {
+                            layer.msg('删除失败', {icon:2})
+                        }
+                    }
+                });
                 layer.close(index);
             });
         } else if(obj.event === 'permissionShow'){
@@ -173,7 +196,7 @@ function saveRole() {
             layer.msg('角色名不能为空', {icon:2});
             return
     }
-    alert(JSON.stringify(data));
+    data.type = 'NORMAL'
     $.ajax({
         type: "POST",
         url: '/roles',
@@ -182,13 +205,14 @@ function saveRole() {
         dataType: "json",
         async: false,
         success: function (data) {
-            alert(data)
-            $('#addForm').hide();
-            layer.closeAll();
-            parent.layer.msg("新增成功", {icon:1})
+            if (data.data != null) {
+                $('#addForm').hide();
+                layer.closeAll();
+                parent.layer.msg("新增成功", {icon:1})
+            }
         }
     });
-    window.location.reload()
+    dataTable.reload({page: {curr: 1}})
 }
 
 $(function () {

@@ -13,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  *  service实现
@@ -34,19 +38,25 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
 
     @Override
-    public List<Menu> findMenusByUser(Long userId) {
+    public List<Menu> findMenusByUser(Integer userId) {
         User currentUser = userService.findWithRole(userId);
         // 管理员返回所有菜单
         if (currentUser != null
                 && currentUser.getRole() != null
                 && RoleType.ADMIN.equals(currentUser.getRole().getType())) {
-            return baseMapper.pageAll(null, new Menu());
+            List<Menu> menus = baseMapper.pageAll(null, new Menu());
+//            去重
+            for (Menu menu : menus) {
+                ArrayList<Menu> children = menu.getChild().stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Menu::getId))), ArrayList::new));
+                menu.setChild(children);
+            }
+            return menus;
         }
         return baseMapper.findMenusByUser(userId);
     }
 
     @Override
-    public List<Menu> findMenusByRoleId(Long roleId) {
+    public List<Menu> findMenusByRoleId(Integer roleId) {
         return baseMapper.findMenusByRoleId(roleId);
     }
 

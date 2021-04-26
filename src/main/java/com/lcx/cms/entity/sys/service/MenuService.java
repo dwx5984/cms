@@ -21,14 +21,14 @@ public interface MenuService extends IService<Menu> {
      * @param userId 用户id
      * @return 菜单列表
      */
-    List<Menu> findMenusByUser(Long userId);
+    List<Menu> findMenusByUser(Integer userId);
 
     /**
      * 根据角色查询对应菜单
      * @param roleId 角色id
      * @return 菜单列表
      */
-    List<Menu> findMenusByRoleId(Long roleId);
+    List<Menu> findMenusByRoleId(Integer roleId);
 
     /**
      * 分页查询所有菜单

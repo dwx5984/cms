@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcx.cms.entity.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  *  service
  *
@@ -26,8 +28,12 @@ public interface UserService extends IService<User> {
      * @param id
      * @return
      */
-    User findWithRole(Long id);
+    User findWithRole(Integer id);
 
     User updateWithRole(User user);
+
+    Boolean removeUser(Integer userId);
+
+    List<User> findByRole(Integer roleId, boolean excludeMe);
 }
 

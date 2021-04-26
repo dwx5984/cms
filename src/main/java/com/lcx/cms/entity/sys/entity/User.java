@@ -1,10 +1,14 @@
 package com.lcx.cms.entity.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lcx.cms.entity.cs.entity.Course;
 import com.lcx.cms.entity.sys.enums.Gender;
+import com.lcx.cms.enums.Bool;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -25,7 +30,8 @@ import static lombok.AccessLevel.PRIVATE;
 @TableName("sys_user")
 public class User {
 
-    Long id;
+    @TableId(value="id", type= IdType.AUTO)
+    Integer id;
 
     /**
      * 性别
@@ -88,7 +94,7 @@ public class User {
     /**
      * 状态
      */
-    Integer status;
+    Bool status;
 
     Date createTime;
 
@@ -109,4 +115,23 @@ public class User {
      */
     @TableField(exist = false)
     Role role;
+
+    @TableField(exist = false)
+    Integer roleId;
+
+    @TableField(exist = false)
+    String oldPassword;
+
+    @TableField(exist = false)
+    List<Course> courses;
+
+    @TableField(exist = false)
+    Integer hours;
+
+    @TableField(exist = false)
+    Integer totalHours;
+
+    @TableField(exist = false)
+    Integer totalHoursByAdmin;
 }
+

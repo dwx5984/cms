@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcx.cms.entity.cs.mapper.ChatMapper">
+
+  <resultMap id="baseResultMap" type="com.lcx.cms.entity.cs.entity.Chat">
+    <id column="cms_chat_id" property="id" />
+    <result column="cms_chat_sender_id" property="senderId" />
+    <result column="cms_chat_teacher_id" property="teacherId" />
+    <result column="cms_chat_content" property="content" />
+    <result column="cms_chat_readed" property="readed" />
+    <result column="cms_chat_create_time" property="createTime" />
+  </resultMap>
+
+  <resultMap id="colMap" type="com.lcx.cms.entity.cs.entity.Chat" extends="baseResultMap">
+    <association property="teacher" column="cms_chat_teacher_id" select="com.lcx.cms.entity.sys.mapper.UserMapper.getWithRole"/>
+    <association property="sender" column="cms_chat_sender_id" select="com.lcx.cms.entity.sys.mapper.UserMapper.getWithRole"/>
+  </resultMap>
+
+  <sql id="baseColumns">
+    cms_chat.id AS cms_chat_id,
+    cms_chat.sender_id AS cms_chat_sender_id,
+    cms_chat.teacher_id AS cms_chat_teacher_id,
+    cms_chat.content AS cms_chat_content,
+    cms_chat.readed AS cms_chat_readed,
+    cms_chat.create_time AS cms_chat_create_time
+  </sql>
+    <select id="findByCurrentUser" resultMap="colMap">
+    select <include refid="baseColumns"/>
+    from cms_chat
+    where teacher_id = #{userId}
+    order by create_time desc
+    limit #{limit}
+    </select>
+
+  <select id="findUnReadByAdmin" resultMap="baseResultMap">
+    select <include refid="baseColumns"/>
+    from cms_chat
+    where readed = 1
+    and sender_id = teacher_id
+  </select>
+
+</mapper>

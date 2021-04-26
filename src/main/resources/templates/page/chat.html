@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hans" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../src/css/layui.css">
+    <script src="../src/layui.js"></script>
+    <script src="../page/js/jquery.3.3.1.min.js"></script>
+    <style>
+        .layui-card {
+            margin-bottom: 15px;
+            border-radius: 2px;
+            background-color: #e6e6e6;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0/5%);
+        }
+    </style>
+    <script type="application/javascript">
+
+        $(function () {
+            getMsg();
+        })
+        function getMsg() {
+            $.ajax({
+                type: "get",
+                url: '/rest/chats/teacher/list?limit=10',
+                async: false,
+                success: function (data) {
+                    if (data.code == 'OK') {
+                        let html = '';
+                        let chatArr = data.data;
+                        if (chatArr.length > 0) {
+                            $('#noneMsg').hide()
+                        }
+                        for (let i = 0; i < chatArr.length; i++) {
+                            html += '<div class="layui-card">\n' +
+                                '            <div class="layui-card-header"><label class="layui-col-md10">' + chatArr[i].sender.name + '(' + chatArr[i].sender.role.name +')'+ '</label>' +
+                                '<label class="layui-col-md2">' + chatArr[i].createTime + '</label></div>\n'+
+                                '<div class="layui-card-body">\n' +
+                                chatArr[i].content +
+                                '            </div>\n' +
+                                '        </div>'
+
+                        }
+                        $("#msg").append(html)
+                        updateRead()
+                    } else {
+                        parent.layer.msg(data.message, {icon: 2})
+                    }
+                }
+            });
+        }
+
+        function send() {
+            let content = $('#content').val()
+            let obj = {content: content}
+            $.ajax({
+                type: "post",
+                url: '/rest/chats',
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (data) {
+                    if (data.code == 'OK') {
+                        parent.layer.msg("提交成功", {icon: 1});
+                        $('#msg').empty()
+                        $('#content').val('')
+                        getMsg()
+                    } else {
+                        parent.layer.msg(data.message, {icon: 2})
+                    }
+                }
+            });
+        }
+        function updateRead() {
+            $.ajax({
+                type: "put",
+                url: '/rest/chats/read',
+                // data: JSON.stringify(obj),
+                // contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (data) {
+                    if (data.code == 'OK') {
+                        parent.findUnread()
+                    } else {
+                        // parent.layer.msg(data.message, {icon: 2})
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<title>在线答疑</title>
+<body style="margin-left: 10px; margin-right: 10px;">
+<div style="margin-top: 10px;">
+    <div style="margin-bottom: 20px;">
+        <h1>在线答疑</h1>
+    </div>
+
+    <div id="msg">
+
+        <div id="noneMsg">
+            暂无数据
+        </div>
+
+<!--        <div class="layui-card">-->
+<!--            <div class="layui-card-header">卡片面板</div>-->
+<!--            <div class="layui-card-body">-->
+<!--                卡片式面板面板通常用于非白色背景色的主体内<br>-->
+<!--                从而映衬出边框投影-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-card">-->
+<!--            <div class="layui-card-header">-->
+<!--                <label class="layui-col-md9">卡片面板</label>-->
+<!--                <label class="layui-col-md3">卡片面板</label>-->
+<!--            </div>-->
+<!--            <div class="layui-card-body">-->
+<!--                卡片式面板面板通常用于非白色背景色的主体内<br>-->
+<!--                从而映衬出边框投影-->
+<!--            </div>-->
+<!--        </div>-->
+
+    </div>
+
+    <div style="margin-top: 100px;">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">发送问题</label>
+            <div class="layui-input-block">
+                <textarea name="desc" id="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit onclick="send()">立即提交</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+

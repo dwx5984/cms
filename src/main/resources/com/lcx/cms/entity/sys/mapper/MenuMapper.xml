@@ -54,9 +54,17 @@
         <include refid="baseColumns"/>,
         null as role_id
         FROM sys_menu sys_menu
-        WHERE sys_menu.parent_id is null
-        <if test="name != null and name!=''">
-            and sys_menu.name like concat('%',#{name}, '%')
+        WHERE
+        <choose>
+            <when test="menu.parentId != null">
+                sys_menu.parent_id = #{menu.parentId}
+            </when>
+            <otherwise>
+                sys_menu.parent_id is null
+            </otherwise>
+        </choose>
+        <if test="menu.name != null and menu.name!=''">
+            and sys_menu.name like concat('%',#{menu.name}, '%')
         </if>
     </select>
 
